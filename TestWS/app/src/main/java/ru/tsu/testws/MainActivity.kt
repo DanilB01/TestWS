@@ -47,5 +47,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
                 }
         }
+
+        viewBinding.mapButton.setOnClickListener {
+            startActivity(Intent(this, MapsActivity::class.java))
+        }
     }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TestWS</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
