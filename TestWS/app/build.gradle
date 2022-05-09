@@ -65,4 +65,6 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:$glideVersion")
 
     implementation "commons-io:commons-io:2.7"
+
+    implementation 'com.github.jd-alexander:library:1.1.0'
 }

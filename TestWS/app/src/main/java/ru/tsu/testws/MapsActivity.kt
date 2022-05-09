@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.directions.route.*
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -17,14 +18,19 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import ru.tsu.testws.databinding.ActivityMapsBinding
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, RoutingListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+
+    private val endLocation = LatLng(
+        56.46953973955253,
+        84.94751051442465
+    )
 
     private val permissions = arrayOf(
         android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -74,16 +80,36 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     fun setCurrentLocation() {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val locationRequest = LocationRequest.create().apply {
-            interval = 1000
-            fastestInterval = 1000
+            interval = 100000
+            fastestInterval = 100000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
         val locationCallback: LocationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
+                mMap.clear()
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(endLocation)
+                        .title("TSU")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+                )
                 for (location in p0.locations) {
                     val curLoc = LatLng(location.latitude, location.longitude)
-                    mMap.addMarker(MarkerOptions().position(curLoc).title("Current location"))
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLoc, 17f))
+                    mMap.addMarker(
+                        MarkerOptions()
+                            .position(curLoc)
+                            .title("Current location")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+                    )
+
+                    val routing = Routing.Builder()
+                        .travelMode(AbstractRouting.TravelMode.WALKING)
+                        .withListener(this@MapsActivity)
+                        .alternativeRoutes(true)
+                        .waypoints(curLoc, endLocation)
+                        .key("AIzaSyCab0wW1JAUQs1bXq2F-zv4sJtbIchK8cQ")
+                        .build()
+                    routing.execute()
                 }
             }
         }
@@ -117,7 +143,37 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (!ifAllGranted) {
             permissionRequest.launch(permissions)
         } else {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(endLocation, 12f))
             setCurrentLocation()
+            mMap.isMyLocationEnabled = true
         }
+    }
+
+    override fun onRoutingFailure(p0: RouteException?) {
+        //TODO("Not yet implemented")
+        val a = p0
+    }
+
+    override fun onRoutingStart() {
+        //TODO("Not yet implemented")
+        println()
+        print ("start")
+        println()
+    }
+
+    override fun onRoutingSuccess(p0: ArrayList<Route>?, p1: Int) {
+        val line = PolylineOptions()
+        line.width(4f).color(R.color.purple_500)
+        p0?.get(p1)?.let {
+            line.addAll(it.points)
+            mMap.addPolyline(line)
+        }
+    }
+
+    override fun onRoutingCancelled() {
+        //TODO("Not yet implemented")
+        println()
+        print ("cancel")
+        println()
     }
 }
