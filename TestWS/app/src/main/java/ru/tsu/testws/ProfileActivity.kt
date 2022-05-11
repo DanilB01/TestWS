@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -65,14 +67,7 @@ class ProfileActivity : AppCompatActivity(R.layout.activity_profile) {
         super.onCreate(savedInstanceState)
 
         viewBinding.profileImage.setOnClickListener {
-            var isAllGranted = true
-            for(permission in mediaPermissions) {
-                if(!checkPermissions(permission)) {
-                    isAllGranted = false
-                    break
-                }
-            }
-            if(isAllGranted) {
+            if (mediaPermissions.all { checkPermissions(it) }) {
                 selectImageFromGalleryResult.launch("image/*")
             } else {
                 requestMediaPermissions.launch(mediaPermissions.toTypedArray())
