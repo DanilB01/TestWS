@@ -61,6 +61,8 @@ class MediaActivity : AppCompatActivity(R.layout.activity_media) {
                 requestMediaPermissions.launch(mediaPermissions.toTypedArray())
             }
         }
+
+
         viewBinding.selectAudio.setOnClickListener {
             if (mediaPermissions.all { checkPermissions(it) }) {
                 selectAudioFromGalleryResult.launch("audio/*")

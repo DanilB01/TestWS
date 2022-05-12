@@ -19,4 +19,6 @@ class ApiRepo(private val api: Api) {
         )
 
     suspend fun deleteAvatar() = api.deleteAvatar("Bearer ${Network.token!!.accessToken}")
+
+    suspend fun getAvatarUrl(url: String) = api.getProfileAvatar(url)
 }

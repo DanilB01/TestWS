@@ -2,6 +2,7 @@ package ru.tsu.testws.network
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.tsu.testws.network.auth.AuthForm
@@ -30,4 +31,7 @@ interface Api {
     suspend fun deleteAvatar(
         @Header("Authorization") token: String
     ): Response<Unit>
+
+    @GET
+    suspend fun getProfileAvatar(@Url avatarUrl: String): ResponseBody
 }
