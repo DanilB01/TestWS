@@ -11,6 +11,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import ru.tsu.testws.bottomnav.BottomNavActivity
 import ru.tsu.testws.databinding.ActivityMainBinding
 import ru.tsu.testws.network.ApiRepo
 import ru.tsu.testws.network.Network
@@ -54,6 +55,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         viewBinding.mediaButton.setOnClickListener {
             startActivity(Intent(this, MediaActivity::class.java))
+        }
+
+        viewBinding.bottomNavButton.setOnClickListener {
+            startActivity(Intent(this, BottomNavActivity::class.java))
         }
     }
 }

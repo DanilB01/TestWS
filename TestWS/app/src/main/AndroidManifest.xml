@@ -18,6 +18,9 @@
         android:theme="@style/Theme.TestWS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".bottomnav.BottomNavActivity"
+            android:exported="false" />
+        <activity
             android:name=".MediaActivity"
             android:exported="false" />
 
