@@ -1,9 +1,11 @@
 package ru.tsu.testws
 
+import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -125,11 +127,24 @@ class ProfileActivity : AppCompatActivity(R.layout.activity_profile) {
                     }
                 }
                 val avatarUrl = profile.avatar?.let { api.getAvatarUrl(it) }
-                File.createTempFile(
+
+                val newFile = File.createTempFile(
                     System.currentTimeMillis().toString(),
                     ".jpeg",
                     getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                ).outputStream().use { it.write(avatarUrl?.bytes()) }
+                )
+
+                val values = ContentValues().apply {
+                    put(MediaStore.Images.Media.DISPLAY_NAME, newFile.nameWithoutExtension)
+                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                }
+
+                val newFileUri = contentResolver.insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    values
+                )
+                val outputStream = contentResolver.openOutputStream(newFileUri!!)
+                outputStream.use { it?.write(avatarUrl?.bytes()) }
 
             } catch (e: HttpException) {
                 val code = e.code()
