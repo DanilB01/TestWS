@@ -18,6 +18,7 @@ import ru.tsu.testws.network.Network
 import ru.tsu.testws.network.auth.ErrorResponse
 import ru.tsu.testws.network.auth.AuthForm
 import ru.tsu.testws.pager.PagerActivity
+import ru.tsu.testws.tabs.TabsActivity
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -64,6 +65,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         viewBinding.pagerButton.setOnClickListener {
             startActivity(Intent(this, PagerActivity::class.java))
+        }
+
+        viewBinding.tabsButton.setOnClickListener {
+            startActivity(Intent(this, TabsActivity::class.java))
         }
     }
 }

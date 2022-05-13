@@ -18,6 +18,11 @@
         android:theme="@style/Theme.TestWS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".tabs.TabsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_tabs"
+            android:theme="@style/Theme.TestWS.NoActionBar" />
+        <activity
             android:name=".pager.PagerActivity"
             android:exported="false" />
         <activity

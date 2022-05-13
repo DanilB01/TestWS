@@ -24,6 +24,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bottomNavButton" />
 
+    <Button
+        android:id="@+id/tabsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Tabs layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pagerButton" />
+
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
