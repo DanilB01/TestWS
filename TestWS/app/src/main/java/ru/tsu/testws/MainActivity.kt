@@ -17,6 +17,7 @@ import ru.tsu.testws.network.ApiRepo
 import ru.tsu.testws.network.Network
 import ru.tsu.testws.network.auth.ErrorResponse
 import ru.tsu.testws.network.auth.AuthForm
+import ru.tsu.testws.pager.PagerActivity
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -59,6 +60,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         viewBinding.bottomNavButton.setOnClickListener {
             startActivity(Intent(this, BottomNavActivity::class.java))
+        }
+
+        viewBinding.pagerButton.setOnClickListener {
+            startActivity(Intent(this, PagerActivity::class.java))
         }
     }
 }
