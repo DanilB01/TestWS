@@ -12,6 +12,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import ru.tsu.testws.bottomnav.BottomNavActivity
+import ru.tsu.testws.combinedview.CombinedViewActivity
 import ru.tsu.testws.databinding.ActivityMainBinding
 import ru.tsu.testws.network.ApiRepo
 import ru.tsu.testws.network.Network
@@ -69,6 +70,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         viewBinding.tabsButton.setOnClickListener {
             startActivity(Intent(this, TabsActivity::class.java))
+        }
+
+        viewBinding.combineActivityButton.setOnClickListener {
+            startActivity(Intent(this, CombinedViewActivity::class.java))
         }
     }
 }

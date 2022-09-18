@@ -18,6 +18,11 @@
         android:theme="@style/Theme.TestWS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".combinedview.CombinedViewActivity"
+            android:exported="false"
+            android:label="@string/title_activity_combined_view"
+            android:theme="@style/Theme.TestWS" />
+        <activity
             android:name=".tabs.TabsActivity"
             android:exported="false"
             android:label="@string/title_activity_tabs"
