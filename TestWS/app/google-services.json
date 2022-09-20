@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "753949187287",
+    "firebase_url": "https://sandbox-827f2-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "sandbox-827f2",
+    "storage_bucket": "sandbox-827f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753949187287:android:92da134adc323f5e4d2492",
+        "android_client_info": {
+          "package_name": "ru.tsu.testws"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753949187287-ftr7mbj0sq21s71olkg066hpekk2vl97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArfMrbYqAeEIwyUqO0fSn-yGFcJ9IMthM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753949187287-ftr7mbj0sq21s71olkg066hpekk2vl97.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

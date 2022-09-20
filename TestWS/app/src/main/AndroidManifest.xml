@@ -18,6 +18,9 @@
         android:theme="@style/Theme.TestWS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".FirebaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".webview.WebActivity"
             android:exported="false" />
         <activity
@@ -51,6 +54,7 @@
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
+        <activity android:name=".firebase.FirebaseActivity" android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -61,12 +65,15 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".view.WidgetView"
+        <receiver
+            android:name=".view.WidgetView"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/widget_example" />
         </receiver>
     </application>

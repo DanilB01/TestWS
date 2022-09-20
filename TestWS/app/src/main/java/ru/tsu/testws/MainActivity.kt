@@ -14,6 +14,7 @@ import retrofit2.HttpException
 import ru.tsu.testws.bottomnav.BottomNavActivity
 import ru.tsu.testws.combinedview.CombinedViewActivity
 import ru.tsu.testws.databinding.ActivityMainBinding
+import ru.tsu.testws.firebase.FirebaseActivity
 import ru.tsu.testws.network.ApiRepo
 import ru.tsu.testws.network.Network
 import ru.tsu.testws.network.auth.ErrorResponse
@@ -79,6 +80,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         viewBinding.webButton.setOnClickListener {
             startActivity(Intent(this, WebActivity::class.java))
+        }
+
+        viewBinding.firebaseButton.setOnClickListener {
+            startActivity(Intent(this, FirebaseActivity::class.java))
         }
     }
 }
