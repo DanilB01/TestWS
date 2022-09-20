@@ -20,6 +20,7 @@ import ru.tsu.testws.network.auth.ErrorResponse
 import ru.tsu.testws.network.auth.AuthForm
 import ru.tsu.testws.pager.PagerActivity
 import ru.tsu.testws.tabs.TabsActivity
+import ru.tsu.testws.webview.WebActivity
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -74,6 +75,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         viewBinding.combineActivityButton.setOnClickListener {
             startActivity(Intent(this, CombinedViewActivity::class.java))
+        }
+
+        viewBinding.webButton.setOnClickListener {
+            startActivity(Intent(this, WebActivity::class.java))
         }
     }
 }

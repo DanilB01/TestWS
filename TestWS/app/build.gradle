@@ -94,4 +94,13 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.16.0'
 
     implementation "com.tbuonomo:dotsindicator:4.3"
+
+    implementation 'com.google.firebase:firebase-auth:21.0.8'
+    implementation 'com.google.firebase:firebase-database:20.0.6'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-core'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0"
+
+
 }

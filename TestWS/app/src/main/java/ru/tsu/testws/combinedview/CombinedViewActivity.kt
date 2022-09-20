@@ -1,27 +1,37 @@
 package ru.tsu.testws.combinedview
 
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.tsu.testws.R
+import ru.tsu.testws.bottomnav.FirstFragment
+import ru.tsu.testws.bottomnav.SecondFragment
+import ru.tsu.testws.bottomnav.ThirdFragment
 import ru.tsu.testws.combinedview.ui.theme.TestWSTheme
 import ru.tsu.testws.databinding.ActivityCombinedviewBinding
 
@@ -44,43 +54,106 @@ class CombinedViewActivity : AppCompatActivity(R.layout.activity_combinedview) {
         Pair("Element 12", "Description of this element")
     )
 
+    private val sensorManager: SensorManager by lazy { getSystemService(Context.SENSOR_SERVICE) as SensorManager }
+    private val sensor by lazy { sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) }
+    private val sensorEventListener = object : SensorEventListener {
+        override fun onSensorChanged(p0: SensorEvent?) {
+            val degrees = p0!!.values
+            Toast.makeText(this@CombinedViewActivity, degrees[0].toString(), 2).show()
+        }
+
+        override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.composeView.apply {
+        binding.bottomNav.apply {
             setContent {
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp)
+                var isSelected1 by remember { mutableStateOf(true) }
+                var isSelected2 by remember { mutableStateOf(false) }
+                var isSelected3 by remember { mutableStateOf(false) }
+
+                BottomNavigation(
+                    backgroundColor = Color.White
                 ) {
-                    items(items = dataset) { item ->
-                        Card(
-                            backgroundColor = colorResource(id = R.color.purple_200),
-                            shape = RoundedCornerShape(8.dp),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
+                    BottomNavigationItem(
+                        selected = isSelected1,
+                        onClick = {
+                            isSelected1 = true
+                            isSelected2 = false
+                            isSelected3 = false
+                            openFragment(FirstFragment())
+                        },
+                        icon = {
                             Column {
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                                     contentDescription = null,
-                                    modifier = Modifier.size(96.dp)
+                                    colorFilter = ColorFilter.tint(color = if(isSelected1) Color.Black else Color.Gray)
                                 )
-                                Text(
-                                    text = item.first,
-                                    fontSize = 16.sp,
-                                    color = colorResource(id = R.color.black),
-                                    modifier = Modifier.padding(horizontal = 16.dp)
-                                )
-                                Text(
-                                    text = item.second,
-                                    fontSize = 16.sp,
-                                    color = colorResource(id = R.color.black),
-                                    modifier = Modifier.padding(horizontal = 16.dp)
-                                )
+                                Text(text = "First", color = Color.Black)
                             }
                         }
-                    }
+                    )
+
+                    BottomNavigationItem(
+                        selected = isSelected2,
+                        onClick = {
+                            isSelected1 = false
+                            isSelected2 = true
+                            isSelected3 = false
+                            openFragment(SecondFragment())
+                        },
+                        icon = {
+                            Column {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                                    contentDescription = null,
+                                    colorFilter = ColorFilter.tint(color = if(isSelected2) Color.Black else Color.Gray)
+                                )
+                                Text(text = "Second")
+                            }
+                        }
+                    )
+
+                    BottomNavigationItem(
+                        selected = isSelected3,
+                        onClick = {
+                            isSelected1 = false
+                            isSelected2 = false
+                            isSelected3 = true
+                            openFragment(ThirdFragment())
+                        },
+                        icon = {
+                            Column {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                                    contentDescription = null,
+                                    colorFilter = ColorFilter.tint(color = if(isSelected3) Color.Black else Color.Gray)
+                                )
+                                Text(text = "Third")
+                            }
+                        }
+                    )
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sensorManager.registerListener(sensorEventListener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(sensorEventListener)
+    }
+
+    private fun openFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().replace(R.id.composeFragmentContainer, fragment, fragment.tag).commit()
     }
 }
