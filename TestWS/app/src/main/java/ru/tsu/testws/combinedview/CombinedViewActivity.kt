@@ -6,6 +6,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -55,11 +56,11 @@ class CombinedViewActivity : AppCompatActivity(R.layout.activity_combinedview) {
     )
 
     private val sensorManager: SensorManager by lazy { getSystemService(Context.SENSOR_SERVICE) as SensorManager }
-    private val sensor by lazy { sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) }
+    private val sensor by lazy { sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) }
     private val sensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(p0: SensorEvent?) {
             val degrees = p0!!.values
-            Toast.makeText(this@CombinedViewActivity, degrees[0].toString(), 2).show()
+            Log.e("Sensor", degrees[0].toString())
         }
 
         override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
