@@ -12,6 +12,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import ru.tsu.testws.bottomnav.BottomNavActivity
+import ru.tsu.testws.capture.CaptureActivity
 import ru.tsu.testws.combinedview.CombinedViewActivity
 import ru.tsu.testws.databinding.ActivityMainBinding
 import ru.tsu.testws.firebase.FirebaseActivity
@@ -84,6 +85,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         viewBinding.firebaseButton.setOnClickListener {
             startActivity(Intent(this, FirebaseActivity::class.java))
+        }
+
+        viewBinding.takePhotoButton.setOnClickListener {
+            startActivity(Intent(this, CaptureActivity::class.java))
         }
     }
 }

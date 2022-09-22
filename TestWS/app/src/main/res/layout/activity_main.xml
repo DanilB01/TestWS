@@ -7,6 +7,15 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/takePhotoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take photo"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firebaseButton" />
+
+    <Button
         android:id="@+id/firebaseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
