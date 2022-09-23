@@ -10,24 +10,15 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.wear.databinding.ActivityMainBinding
+import com.google.android.gms.wearable.MessageClient
+import com.google.android.gms.wearable.MessageEvent
+import com.google.android.gms.wearable.Wearable
 
-class MainActivity : Activity() {
+class MainActivity : Activity(), MessageClient.OnMessageReceivedListener {
 
     private lateinit var binding: ActivityMainBinding
+    private val messageClient by lazy { Wearable.getMessageClient(this) }
 
-    private lateinit var sensor: Sensor
-    private lateinit var sensorManager: SensorManager
-    private var sensorEventListener = object: SensorEventListener {
-
-        override fun onSensorChanged(p0: SensorEvent?) {
-            val value = p0!!.values
-            Log.e("Sensor value", value.toString())
-        }
-
-        override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,17 +26,19 @@ class MainActivity : Activity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+        messageClient.addListener(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        sensorManager.registerListener(sensorEventListener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
+    override fun onMessageReceived(event: MessageEvent) {
+        println(event)
+        if (event.path != EXAMPLE_CAPABILITY_PATH) return
+
+        val token = String(event.data)
+        println(token)
+        binding.text.text = token
     }
 
-    override fun onPause() {
-        super.onPause()
-        sensorManager.unregisterListener(sensorEventListener)
+    private companion object {
+        const val EXAMPLE_CAPABILITY_PATH = "/example"
     }
 }

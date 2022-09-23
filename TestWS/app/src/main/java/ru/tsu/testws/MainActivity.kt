@@ -2,9 +2,13 @@ package ru.tsu.testws
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.gms.tasks.Tasks
+import com.google.android.gms.wearable.CapabilityClient
+import com.google.android.gms.wearable.Wearable
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -29,8 +33,49 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val viewBinding: ActivityMainBinding by viewBinding()
     private val api by lazy { ApiRepo(Network.retrofit) }
 
+    private val messageClient by lazy { Wearable.getMessageClient(this) }
+
+    private var nodeId: String? = null
+
+    private fun sendMessage() {
+        val capabilityInfo = Tasks.await(
+            Wearable.getCapabilityClient(this)
+                .getAllCapabilities(CapabilityClient.FILTER_REACHABLE)
+        )
+
+        nodeId = capabilityInfo.flatMap { it.value.nodes }.firstOrNull { it.isNearby }?.id
+    }
+
+    private fun requestData() {
+        nodeId?.let {
+            messageClient
+                .sendMessage(it, EXAMPLE_CAPABILITY_PATH, "token".toByteArray())
+                .apply {
+                    addOnSuccessListener {
+                        Log.i("Mobile", "Token sent")
+                    }
+                    addOnFailureListener {
+                        Log.i("Mobile", "Error sent token")
+                    }
+                }
+        }
+    }
+
+    private companion object {
+        const val EXAMPLE_CAPABILITY_PATH = "/example"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        GlobalScope.launch {
+            delay(1000)
+            sendMessage()
+            requestData()
+        }
+
+
+
 
         viewBinding.registerButton.setOnClickListener {
 
